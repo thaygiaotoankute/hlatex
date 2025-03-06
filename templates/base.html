@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}H_Latex{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">H_Latex</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="convertDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Chuyển đổi dữ liệu
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="convertDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('convert.ex') }}">Chuyển ex</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('convert.extf') }}">Chuyển ex Đúng/Sai</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('convert.bt') }}">Chuyển bt</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('convert.vd') }}">Chuyển vd</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('convert.addtrue') }}">Thêm lệnh \True</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="bbtDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Bảng biến thiên
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="bbtDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('bbt.auto') }}">Bảng biến thiên tự động</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('bbt.manual') }}">Bảng biến thiên thủ công</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="graphDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Đồ thị
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="graphDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('graph.auto') }}">Đồ thị các hàm thường gặp</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('graph.custom') }}">Đồ thị hàm tùy ý</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('hkg.index') }}">Hình không gian</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.license') }}">Bản quyền</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mt-4 mb-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>H_Latex</h5>
+                    <p>Công cụ hỗ trợ tạo mã LaTeX cho biểu đồ, bảng biến thiên, đồ thị và các công cụ toán học khác.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Liên kết</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('main.index') }}" class="text-white">Trang chủ</a></li>
+                        <li><a href="{{ url_for('main.about') }}" class="text-white">Giới thiệu</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Liên hệ</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="mailto:info@hlatex.com" class="text-white">info@hlatex.com</a></li>
+                        <li><a href="https://github.com/PhucRua/HLatex" class="text-white">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-4">
+            <div class="row">
+                <div class="col text-center">
+                    <p class="mb-0">&copy; 2025 H_Latex. Bản quyền đã đăng ký.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
