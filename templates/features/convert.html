@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}Chuyển đổi dữ liệu - H_Latex{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Chuyển đổi dữ liệu</h1>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Chọn loại chuyển đổi</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="{{ url_for('convert.ex') }}" class="list-group-item list-group-item-action {% if convert_type == 'ex' %}active{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">Chuyển ex</h5>
+                                    <p class="mb-1 text-muted small">Chuyển đổi văn bản thành dạng ex</p>
+                                </div>
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('convert.extf') }}" class="list-group-item list-group-item-action {% if convert_type == 'extf' %}active{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">Chuyển ex Đúng/Sai</h5>
+                                    <p class="mb-1 text-muted small">Chuyển đổi văn bản thành dạng ex Đúng/Sai</p>
+                                </div>
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('convert.bt') }}" class="list-group-item list-group-item-action {% if convert_type == 'bt' %}active{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">Chuyển bt</h5>
+                                    <p class="mb-1 text-muted small">Chuyển đổi văn bản thành dạng bt</p>
+                                </div>
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('convert.vd') }}" class="list-group-item list-group-item-action {% if convert_type == 'vd' %}active{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">Chuyển vd</h5>
+                                    <p class="mb-1 text-muted small">Chuyển đổi văn bản thành dạng vd</p>
+                                </div>
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('convert.addtrue') }}" class="list-group-item list-group-item-action {% if convert_type == 'addtrue' %}active{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">Thêm lệnh \True</h5>
+                                    <p class="mb-1 text-muted small">Thêm lệnh \True vào phương án đúng</p>
+                                </div>
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        {% if convert_type == 'ex' %}
+                            Chuyển đổi sang dạng ex
+                        {% elif convert_type == 'extf' %}
+                            Chuyển đổi sang dạng ex Đúng/Sai
+                        {% elif convert_type == 'bt' %}
+                            Chuyển đổi sang dạng bt
+                        {% elif convert_type == 'vd' %}
+                            Chuyển đổi sang dạng vd
+                        {% elif convert_type == 'addtrue' %}
+                            Thêm lệnh \True vào phương án đúng
+                        {% else %}
+                            Chuyển đổi dữ liệu
+                        {% endif %}
+                    </h5>
+                </div>
+                
+                <div class="card-body">
+                    {% if convert_type == 'addtrue' %}
+                        <form method="post" action="{{ url_for('convert.addtrue') }}">
+                            <div class="mb-3">
+                                <label for="text" class="form-label">Văn bản có câu hỏi trắc nghiệm</label>
+                                <textarea id="text" name="text" class="form-control" rows="10" placeholder="Dán văn bản có câu hỏi trắc nghiệm vào đây...">{{ text or '' }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="answers" class="form-label">Danh sách đáp án đúng</label>
+                                <input type="text" id="answers" name="answers" class="form-control" placeholder="Ví dụ: ABCDA..." value="{{ answers or '' }}">
+                                <small class="form-text text-muted">Nhập danh sách các đáp án đúng theo thứ tự: A, B, C, D</small>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">Thêm \True</button>
+                                <button type="reset" class="btn btn-outline-secondary">Xóa</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{{ url_for('convert.' + (convert_type or 'ex')) }}">
+                            <div class="mb-3">
+                                <label for="text" class="form-label">Văn bản cần chuyển đổi</label>
+                                <textarea id="text" name="text" class="form-control" rows="10" placeholder="Dán văn bản cần chuyển đổi vào đây...">{{ text or '' }}</textarea>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">Chuyển đổi</button>
+                                <button type="reset" class="btn btn-outline-secondary">Xóa</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if result %}
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Kết quả</h5>
+                            <button id="copyBtn" class="btn btn-sm btn-outline-primary" data-target="resultText">
+                                <i class="fas fa-copy me-2"></i>Sao chép
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="latex-preview" id="resultText">{{ result }}</div>
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if error %}
+                <div class="alert alert-danger mt-4">
+                    <h5>Lỗi khi chuyển đổi</h5>
+                    <p>{{ error }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Copy button functionality
+        const copyBtn = document.getElementById('copyBtn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', function() {
+                const resultText = document.getElementById('resultText');
+                const textToCopy = resultText.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // Temporarily change button text
+                    copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Đã sao chép';
+                    
+                    // Reset button text after 2 seconds
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Sao chép';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Could not copy text: ', err);
+                    alert('Không thể sao chép văn bản. Vui lòng thử lại.');
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}
