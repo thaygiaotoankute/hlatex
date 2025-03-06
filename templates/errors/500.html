@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Lỗi máy chủ - H_Latex{% endblock %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="error-container">
+                <h1 class="display-1 fw-bold">500</h1>
+                <h2 class="mb-4">Lỗi máy chủ nội bộ</h2>
+                <p class="lead mb-5">Đã xảy ra lỗi trong quá trình xử lý yêu cầu của bạn. Vui lòng thử lại sau.</p>
+                <div class="d-flex justify-content-center">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-primary me-3">Về trang chủ</a>
+                    <button onclick="history.back()" class="btn btn-outline-secondary">Quay lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
