@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block title %}Kiểm tra bản quyền - H_Latex{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Đăng ký bản quyền</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Kiểm tra bản quyền</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="systemInfo" class="form-label">Thông tin hệ thống</label>
+                        <textarea id="systemInfo" class="form-control" rows="2" readonly></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="licenseStatus" class="form-label">Trạng thái đăng ký</label>
+                        <div id="licenseStatus" class="alert alert-secondary">Đang kiểm tra...</div>
+                    </div>
+                    <button id="checkLicenseBtn" class="btn btn-primary">Kiểm tra bản quyền</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Nhập mã bản quyền</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="licenseCode" class="form-label">Mã bản quyền</label>
+                        <input type="text" id="licenseCode" class="form-control">
+                    </div>
+                    <button id="activateLicenseBtn" class="btn btn-success">Kích hoạt bản quyền</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Thông tin thiết bị</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Hệ điều hành</dt>
+                        <dd class="col-sm-8" id="osInfo">Đang tải...</dd>
+                        
+                        <dt class="col-sm-4">CPU</dt>
+                        <dd class="col-sm-8" id="cpuInfo">Đang tải...</dd>
+                        
+                        <dt class="col-sm-4">MAC</dt>
+                        <dd class="col-sm-8" id="macAddress">Đang tải...</dd>
+                    </dl>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Mua bản quyền</h5>
+                </div>
+                <div class="card-body">
+                    <p>Để nhận mã bản quyền, vui lòng liên hệ:</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> <a href="mailto:license@hlatex.com">license@hlatex.com</a></li>
+                        <li><i class="fas fa-phone me-2"></i> <a href="tel:+84123456789">+84 123 456 789</a></li>
+                    </ul>
+                    <hr>
+                    <p class="mb-0">Cung cấp thông tin hệ thống của bạn khi liên hệ để nhận mã phù hợp.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lấy thông tin hệ thống
+        fetch('/api/system-info')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('systemInfo').value = data.system_info;
+                document.getElementById('osInfo').textContent = data.os + ' ' + data.os_version;
+                document.getElementById('cpuInfo').textContent = data.cpu_info;
+                document.getElementById('macAddress').textContent = data.mac_address;
+                
+                // Tự động kiểm tra bản quyền khi tải trang
+                checkLicense();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('systemInfo').value = 'Không thể tải thông tin hệ thống';
+            });
+
+        // Kiểm tra bản quyền
+        function checkLicense() {
+            const statusElement = document.getElementById('licenseStatus');
+            statusElement.textContent = 'Đang kiểm tra...';
+            statusElement.className = 'alert alert-secondary';
+            
+            fetch('/api/check-license')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.is_registered) {
+                        statusElement.textContent = 'Đã đăng ký bản quyền';
+                        statusElement.className = 'alert alert-success';
+                    } else {
+                        statusElement.textContent = 'Chưa đăng ký bản quyền';
+                        statusElement.className = 'alert alert-danger';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    statusElement.textContent = 'Lỗi kiểm tra bản quyền';
+                    statusElement.className = 'alert alert-danger';
+                });
+        }
+        
+        document.getElementById('checkLicenseBtn').addEventListener('click', checkLicense);
+        
+        // Kích hoạt bản quyền
+        document.getElementById('activateLicenseBtn').addEventListener('click', function() {
+            const licenseCode = document.getElementById('licenseCode').value.trim();
+            if (!licenseCode) {
+                alert('Vui lòng nhập mã bản quyền');
+                return;
+            }
+            
+            const statusElement = document.getElementById('licenseStatus');
+            statusElement.textContent = 'Đang kiểm tra...';
+            statusElement.className = 'alert alert-secondary';
+            
+            fetch('/api/check-license', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    license_code: licenseCode
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_registered) {
+                    statusElement.textContent = 'Đã kích hoạt bản quyền thành công!';
+                    statusElement.className = 'alert alert-success';
+                } else {
+                    statusElement.textContent = 'Mã bản quyền không hợp lệ';
+                    statusElement.className = 'alert alert-danger';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                statusElement.textContent = 'Lỗi kích hoạt bản quyền';
+                statusElement.className = 'alert alert-danger';
+            });
+        });
+    });
+</script>
+{% endblock %}
