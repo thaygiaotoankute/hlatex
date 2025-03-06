@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}H_Latex - Công cụ hỗ trợ LaTeX{% endblock %}
+
+{% block content %}
+<section class="text-center py-5">
+    <h1 class="display-4 mb-3">H_Latex</h1>
+    <p class="lead mb-4">Công cụ hỗ trợ tạo mã LaTeX cho biểu đồ, bảng biến thiên, đồ thị và các công cụ toán học khác.</p>
+    <p class="mb-5">Bây giờ có thể sử dụng trên Web!</p>
+    <div class="d-flex justify-content-center gap-3">
+        <a href="{{ url_for('convert.index') }}" class="btn btn-primary btn-lg">Bắt đầu ngay</a>
+        <a href="{{ url_for('main.about') }}" class="btn btn-outline-dark btn-lg">Tìm hiểu thêm</a>
+    </div>
+</section>
+
+<section class="py-5">
+    <h2 class="text-center mb-4">Tính năng</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-exchange-alt fa-3x mb-3 text-primary"></i>
+                    <h3 class="card-title">Chuyển đổi dữ liệu</h3>
+                    <p class="card-text">Chuyển đổi dữ liệu sang định dạng LaTeX với nhiều tùy chọn khác nhau: ex, bt, vd, và thêm lệnh \True.</p>
+                    <a href="{{ url_for('convert.index') }}" class="btn btn-outline-primary">Thử ngay</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-3x mb-3 text-primary"></i>
+                    <h3 class="card-title">Bảng biến thiên</h3>
+                    <p class="card-text">Tạo bảng biến thiên tự động và thủ công cho các hàm số toán học, xuất ra mã LaTeX.</p>
+                    <a href="{{ url_for('bbt.index') }}" class="btn btn-outline-primary">Thử ngay</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-project-diagram fa-3x mb-3 text-primary"></i>
+                    <h3 class="card-title">Đồ thị hàm số</h3>
+                    <p class="card-text">Vẽ đồ thị các hàm số thông dụng và các hàm số tùy chỉnh, xuất ra mã TikZ.</p>
+                    <a href="{{ url_for('graph.index') }}" class="btn btn-outline-primary">Thử ngay</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-cube fa-3x mb-3 text-primary"></i>
+                    <h3 class="card-title">Hình không gian</h3>
+                    <p class="card-text">Tạo mã LaTeX cho các mẫu hình không gian thông dụng: hình chóp, hình hộp, khối cầu, khối trụ...</p>
+                    <a href="{{ url_for('hkg.index') }}" class="btn btn-outline-primary">Thử ngay</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-cogs fa-3x mb-3 text-primary"></i>
+                    <h3 class="card-title">API</h3>
+                    <p class="card-text">Sử dụng các tính năng trên qua REST API, dễ dàng tích hợp vào ứng dụng của bạn.</p>
+                    <a href="{{ url_for('main.about') }}#api" class="btn btn-outline-primary">Tìm hiểu API</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-desktop fa-3x mb-3 text-primary"></i>
+                    <h3 class="card-title">Desktop</h3>
+                    <p class="card-text">Tải xuống phiên bản desktop đầy đủ chức năng cho Windows và MacOS.</p>
+                    <a href="https://github.com/PhucRua/HLatex" target="_blank" class="btn btn-outline-primary">Tải phiên bản desktop</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">Hướng dẫn nhanh</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Chuyển đổi dữ liệu</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Dán nội dung cần chuyển đổi vào ô nhập liệu, chọn loại chuyển đổi và nhấn nút chuyển đổi.</p>
+                        <pre class="bg-light p-3 rounded">f(x) = x^2 + 2x + 1</pre>
+                        <p>Kết quả:</p>
+                        <pre class="bg-light p-3 rounded">\begin{ex}f(x) = x^2 + 2x + 1\end{ex}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Tạo bảng biến thiên</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Chọn loại hàm số, nhập các tham số và nhấn nút "Xuất code".</p>
+                        <div class="text-center">
+                            <img src="{{ url_for('static', filename='img/bbt_example.png') }}" alt="Bảng biến thiên" class="img-fluid" style="max-height: 200px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
