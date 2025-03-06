@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - SECRET_KEY=change_me_in_production
+      - ADMIN_KEY=admin_access_key
+      - FLASK_ENV=development
+    volumes:
+      - ./static/output:/app/static/output
+    restart: unless-stopped
